@@ -82,6 +82,7 @@ class WebRtcService {
             } else if (['connected', 'completed'].includes(peerConnection.iceConnectionState)) {
                 state.restartAttempted = false;
                 this.handlers.onIceConnectionState(peerId, peerConnection.iceConnectionState);
+                void this.updateVideoCodec(peerId, peerConnection);
             }
         };
 
@@ -101,6 +102,7 @@ class WebRtcService {
             state.settingRemoteDescription = true;
             state.isSettingRemoteAnswerPending = offer.type === 'answer';
             await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+            this.applyVideoCodecPreferences(peerConnection);
             state.isSettingRemoteAnswerPending = false;
             state.settingRemoteDescription = false;
             await this.applyPendingCandidates(peerConnection, state);
@@ -154,14 +156,21 @@ class WebRtcService {
         }
     }
 
-    async toggleScreenShare() {
+    async toggleScreenShare({ width, height, frameRate }) {
         if (this.localStream) {
             this.stopScreenShare();
             return;
         }
 
         try {
-            this.localStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
+            this.localStream = await navigator.mediaDevices.getDisplayMedia({
+                video: {
+                    width: { ideal: width },
+                    height: { ideal: height },
+                    frameRate: { ideal: frameRate }
+                },
+                audio: true
+            });
             for (const peerConnection of this.peerConnections.values()) {
                 this.addLocalTracks(peerConnection, this.localStream);
             }
@@ -202,6 +211,7 @@ class WebRtcService {
             this.peerConnections.delete(peerId);
         }
         this.peerStates.delete(peerId);
+        this.handlers.onVideoCodec(peerId, null);
     }
 
     dispose() {
@@ -220,6 +230,67 @@ class WebRtcService {
                 peerConnection.addTrack(track, stream);
             }
         }
+        this.applyVideoCodecPreferences(peerConnection);
+    }
+
+    applyVideoCodecPreferences(peerConnection) {
+        if (typeof RTCRtpSender.getCapabilities !== 'function') {
+            return;
+        }
+
+        const transceivers = peerConnection.getTransceivers().filter(transceiver =>
+            transceiver.sender.track?.kind === 'video'
+                || transceiver.receiver.track?.kind === 'video');
+        if (transceivers.length === 0) return;
+
+        for (const transceiver of transceivers) {
+            if (typeof transceiver.setCodecPreferences !== 'function') {
+                console.warn('Preferência de codec não suportada; usando a negociação padrão do navegador.');
+                return;
+            }
+        }
+
+        const capabilities = RTCRtpSender.getCapabilities('video');
+        if (!capabilities?.codecs) {
+            return;
+        }
+
+        const videoCodecs = capabilities.codecs.filter(codec =>
+            codec.mimeType?.toLowerCase().startsWith('video/')
+                && codec.mimeType.toLowerCase() !== 'video/rtx');
+        const preferredVideoCodecs = [
+            ...videoCodecs.filter(codec => codec.mimeType.toLowerCase() === 'video/h264'),
+            ...videoCodecs.filter(codec => codec.mimeType.toLowerCase() !== 'video/h264')
+        ];
+        if (preferredVideoCodecs.length === 0) {
+            console.warn('Nenhum codec de vídeo anunciado pelo navegador; usando a negociação padrão.');
+            return;
+        }
+
+        const preferredCodecs = [];
+        for (const codec of preferredVideoCodecs) {
+            preferredCodecs.push(codec);
+            const payloadType = codec.preferredPayloadType;
+            if (payloadType === undefined) continue;
+
+            const rtxCodecs = capabilities.codecs.filter(candidate =>
+                candidate.mimeType?.toLowerCase() === 'video/rtx'
+                    && candidate.sdpFmtpLine?.match(/(?:^|;)\s*apt=(\d+)(?:;|$)/i)?.[1]
+                    === String(payloadType));
+            preferredCodecs.push(...rtxCodecs);
+        }
+        const includedCodecs = new Set(preferredCodecs);
+        preferredCodecs.push(...capabilities.codecs.filter(codec =>
+            codec.mimeType?.toLowerCase().startsWith('video/')
+                && !includedCodecs.has(codec)));
+
+        try {
+            for (const transceiver of transceivers) {
+                transceiver.setCodecPreferences(preferredCodecs);
+            }
+        } catch (error) {
+            console.warn('Não foi possível aplicar preferências de codec; usando a negociação padrão.', error);
+        }
     }
 
     async applyPendingCandidates(peerConnection, state) {
@@ -232,6 +303,27 @@ class WebRtcService {
                     throw error;
                 }
             }
+        }
+    }
+
+    async updateVideoCodec(peerId, peerConnection) {
+        try {
+            const stats = await peerConnection.getStats();
+            const videoReports = [...stats.values()].filter(report =>
+                ['outbound-rtp', 'inbound-rtp'].includes(report.type)
+                    && (report.kind === 'video' || report.mediaType === 'video')
+                    && report.codecId);
+            videoReports.sort((first, second) =>
+                Number(second.type === 'outbound-rtp') - Number(first.type === 'outbound-rtp'));
+            for (const report of videoReports) {
+                const codec = stats.get(report.codecId);
+                if (codec?.mimeType?.startsWith('video/')) {
+                    this.handlers.onVideoCodec(peerId, codec.mimeType.substring('video/'.length));
+                    return;
+                }
+            }
+        } catch (error) {
+            console.warn(`Não foi possível consultar o codec de vídeo de ${peerId}.`, error);
         }
     }
 

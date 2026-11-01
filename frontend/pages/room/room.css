@@ -51,6 +51,10 @@ footer {
     flex: none; background-color: #1e1e1e; padding: 10px 20px; display: flex;
     align-items: center; justify-content: space-between; gap: 16px; border-top: 1px solid #333;
 }
+#share-settings { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+#share-settings label { display: flex; align-items: center; gap: 6px; color: #bbb; font-size: 13px; }
+#share-settings select { padding: 6px 8px; border: 1px solid #444; border-radius: 4px; background: #2a2a2a; color: #fff; }
+#codec-status, #share-settings small { color: #aaa; font-size: 12px; }
 #participants-section { min-width: 0; }
 #participants-heading { margin-bottom: 5px; color: #aaa; font-size: 12px; font-weight: normal; }
 #participant-list {
@@ -66,5 +70,6 @@ footer {
     #main-video-container { min-height: 150px; }
     .video-tile.is-thumbnail { flex-basis: 170px; height: 108px; }
     footer { align-items: stretch; flex-direction: column; padding: 10px 12px; }
+    #share-settings { justify-content: center; }
     #footer-actions { justify-content: center; flex-wrap: wrap; }
 }

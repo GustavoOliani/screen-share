@@ -2,12 +2,16 @@ let myId;
 let hasConnectionError = false;
 let mainVideoId;
 const participantIds = new Set();
+const peerVideoCodecs = new Map();
 const connectionStatus = document.getElementById('connection-status');
 const mainVideoContainer = document.getElementById('main-video-container');
 const thumbnailStrip = document.getElementById('thumbnail-strip');
 const participantsHeading = document.getElementById('participants-heading');
 const placeholder = document.getElementById('placeholder-card');
 const shareButton = document.getElementById('share-btn');
+const resolutionSelect = document.getElementById('resolution-select');
+const frameRateSelect = document.getElementById('frame-rate-select');
+const codecStatus = document.getElementById('codec-status');
 const localScreenId = '__local-screen__';
 const mediaService = new window.WebRtcService({
     sendSignal: (...args) => roomService.sendSignal(...args),
@@ -18,14 +22,19 @@ const mediaService = new window.WebRtcService({
         onLocalScreenShareStarted: (stream) => {
             shareButton.innerText = 'Parar Compartilhamento';
             shareButton.className = 'btn-danger';
+            resolutionSelect.disabled = true;
+            frameRateSelect.disabled = true;
             addVideoTile(localScreenId, stream);
         },
         onLocalScreenShareEnded: () => {
             shareButton.innerText = 'Compartilhar Tela';
             shareButton.className = 'btn-success';
+            resolutionSelect.disabled = false;
+            frameRateSelect.disabled = false;
             removeVideoTile(localScreenId);
         },
         onIceConnectionState: handleIceConnectionState,
+        onVideoCodec: updatePeerVideoCodec,
         onError: reportMediaError
     }
 });
@@ -108,6 +117,26 @@ function handleIceConnectionState(peerId, state) {
         connectionStatus.classList.remove('connection-status-error');
         connectionStatus.classList.add('connection-status-connected');
     }
+}
+
+function updatePeerVideoCodec(peerId, codec) {
+    if (codec) {
+        peerVideoCodecs.set(peerId, codec);
+    } else {
+        peerVideoCodecs.delete(peerId);
+    }
+
+    if (peerVideoCodecs.size === 0) {
+        codecStatus.innerText = 'Codec: aguardando conexão de vídeo';
+        return;
+    }
+
+    const distinctCodecs = new Set(peerVideoCodecs.values());
+    codecStatus.innerText = distinctCodecs.size === 1
+        ? `Codec em uso: ${distinctCodecs.values().next().value}`
+        : `Codecs em uso: ${[...peerVideoCodecs.entries()]
+            .map(([id, name]) => `${id.slice(0, 8)}: ${name}`)
+            .join(', ')}`;
 }
 
 function addVideoTile(id, stream) {
@@ -227,6 +256,10 @@ function leaveRoom() {
     window.location.assign('index.html');
 }
 
-shareButton.addEventListener('click', () => mediaService.toggleScreenShare());
+shareButton.addEventListener('click', () => {
+    const [width, height] = resolutionSelect.value.split('x').map(Number);
+    const frameRate = Number(frameRateSelect.value);
+    mediaService.toggleScreenShare({ width, height, frameRate });
+});
 document.querySelector('.btn-danger:last-child').addEventListener('click', leaveRoom);
 connect();

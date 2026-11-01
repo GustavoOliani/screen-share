@@ -25,6 +25,26 @@
             <div id="thumbnail-strip" aria-label="Outros compartilhamentos"></div>
         </div>
         <footer>
+            <section id="share-settings" aria-label="Configurações de compartilhamento">
+                <label for="resolution-select">
+                    Resolução
+                    <select id="resolution-select">
+                        <option value="1280x720">720p</option>
+                        <option value="1920x1080" selected>1080p</option>
+                        <option value="2560x1440">1440p</option>
+                    </select>
+                </label>
+                <label for="frame-rate-select">
+                    FPS
+                    <select id="frame-rate-select">
+                        <option value="15">15</option>
+                        <option value="30" selected>30</option>
+                        <option value="60">60</option>
+                    </select>
+                </label>
+                <span id="codec-status" role="status" aria-live="polite">Codec: aguardando conexão de vídeo</span>
+                <small>O navegador pode ajustar a qualidade conforme a tela e o dispositivo.</small>
+            </section>
             <div id="footer-actions">
                 <button id="share-btn" class="btn-success" disabled>Compartilhar Tela</button>
                 <button class="btn-danger">Sair da Sala</button>
