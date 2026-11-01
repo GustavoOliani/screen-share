@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/room.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="pages/room/room.css">
     <title>Sala - Screen Share P2P</title>
     
 </head>
@@ -19,6 +20,7 @@
         </header>
         <div id="video-content">
             <div id="main-video-container" aria-live="polite">
+                <div id="placeholder-card" class="placeholder-message">Aguardando compartilhamento de tela...</div>
             </div>
             <div id="thumbnail-strip" aria-label="Outros compartilhamentos"></div>
         </div>
@@ -31,6 +33,9 @@
     </main>
 
 
-    <script src="js/room.js" defer></script>
+    <script src="common/config.js"></script>
+    <script src="pages/room/room-service.js" defer></script>
+    <script src="pages/room/webrtc-service.js" defer></script>
+    <script src="pages/room/room.js" defer></script>
 </body>
 </html>

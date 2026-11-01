@@ -20,3 +20,5 @@ services:
     envVars:
       - key: WEBSOCKET_URL
         sync: false
+      - key: ICE_SERVERS_JSON
+        sync: false

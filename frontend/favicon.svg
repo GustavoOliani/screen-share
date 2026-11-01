@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Background Vignette Gradient -->
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="75%">
+      <stop offset="0%" stop-color="#2a1f1d" />
+      <stop offset="100%" stop-color="#0f0a0a" />
+    </radialGradient>
+
+    <!-- Wood Texture & Shading Gradients -->
+    <linearGradient id="woodBase" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2b1408" />
+      <stop offset="15%" stop-color="#4a2511" />
+      <stop offset="50%" stop-color="#6e3719" />
+      <stop offset="85%" stop-color="#4a2511" />
+      <stop offset="100%" stop-color="#1f0d04" />
+    </linearGradient>
+
+    <linearGradient id="staveHighlight" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.2" />
+      <stop offset="20%" stop-color="#ffffff" stop-opacity="0.0" />
+      <stop offset="80%" stop-color="#000000" stop-opacity="0.0" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.4" />
+    </linearGradient>
+
+    <!-- Iron Hoop Gradients -->
+    <linearGradient id="metalHoop" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1c1d21" />
+      <stop offset="25%" stop-color="#484c54" />
+      <stop offset="45%" stop-color="#828894" />
+      <stop offset="55%" stop-color="#5a5f6b" />
+      <stop offset="85%" stop-color="#28292e" />
+      <stop offset="100%" stop-color="#0e0f12" />
+    </linearGradient>
+
+    <!-- Handle Wood Gradient -->
+    <linearGradient id="handleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6e3719" />
+      <stop offset="50%" stop-color="#3d1e0d" />
+      <stop offset="100%" stop-color="#1a0b04" />
+    </linearGradient>
+
+    <!-- Ale Foam Gradient -->
+    <linearGradient id="foamGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fffdf5" />
+      <stop offset="60%" stop-color="#f7e4b5" />
+      <stop offset="100%" stop-color="#d6ab65" />
+    </linearGradient>
+
+    <!-- Drop Shadows -->
+    <filter id="dropShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="15" stdDeviation="10" flood-color="#000000" flood-opacity="0.8" />
+    </filter>
+
+    <filter id="foamShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#4a2511" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+
+  <!-- Table Surface -->
+  <ellipse cx="250" cy="440" rx="210" ry="40" fill="#170d07" />
+  <ellipse cx="250" cy="435" rx="200" ry="35" fill="#26140b" />
+
+  <g filter="url(#dropShadow)">
+    <!-- Handle Outer/Inner -->
+    <path d="M 140 180 C 40 180 30 360 140 370 C 110 330 110 220 140 210 Z" fill="url(#handleGrad)" stroke="#1a0b04" stroke-width="3" />
+    <!-- Handle Joint Mounts -->
+    <rect x="130" y="180" width="30" height="25" rx="4" fill="url(#metalHoop)" stroke="#0e0f12" />
+    <rect x="130" y="345" width="30" height="25" rx="4" fill="url(#metalHoop)" stroke="#0e0f12" />
+    <circle cx="145" cy="192.5" r="3" fill="#0a0a0d" />
+    <circle cx="145" cy="357.5" r="3" fill="#0a0a0d" />
+
+    <!-- Main Body Base (Tapered Bucket Shape) -->
+    <!-- Outer Contour Path -->
+    <g id="mugBody">
+      <!-- Base Wood Body -->
+      <path d="M 160 150 L 340 150 L 360 400 L 140 400 Z" fill="url(#woodBase)" />
+
+      <!-- Individual Staves (Vertical Planks) -->
+      <!-- Stave 1 -->
+      <path d="M 160 150 L 195 150 L 182 400 L 140 400 Z" fill="url(#woodBase)" />
+      <path d="M 160 150 L 195 150 L 182 400 L 140 400 Z" fill="url(#staveHighlight)" />
+      <!-- Stave 2 -->
+      <path d="M 195 150 L 235 150 L 227 400 L 182 400 Z" fill="url(#woodBase)" />
+      <path d="M 195 150 L 235 150 L 227 400 L 182 400 Z" fill="url(#staveHighlight)" />
+      <!-- Stave 3 (Center) -->
+      <path d="M 235 150 L 265 150 L 265 400 L 227 400 Z" fill="url(#woodBase)" />
+      <path d="M 235 150 L 265 150 L 265 400 L 227 400 Z" fill="url(#staveHighlight)" />
+      <!-- Stave 4 -->
+      <path d="M 265 150 L 305 150 L 318 400 L 265 400 Z" fill="url(#woodBase)" />
+      <path d="M 265 150 L 305 150 L 318 400 L 265 400 Z" fill="url(#staveHighlight)" />
+      <!-- Stave 5 -->
+      <path d="M 305 150 L 340 150 L 360 400 L 318 400 Z" fill="url(#woodBase)" />
+      <path d="M 305 150 L 340 150 L 360 400 L 318 400 Z" fill="url(#staveHighlight)" />
+
+      <!-- Wood Grain Overlay Lines -->
+      <path d="M 175 160 Q 170 250 162 380 M 215 155 Q 210 280 205 390 M 250 160 Q 252 270 248 395 M 285 155 Q 290 260 295 385 M 325 160 Q 335 270 342 380" stroke="#1a0b04" stroke-width="1.5" fill="none" opacity="0.4" stroke-dasharray="15 2 30 4 8 2" />
+
+      <!-- Metal Hoops (Bands) -->
+      <!-- Top Metal Band -->
+      <g>
+        <path d="M 154 190 L 346 190 L 349 220 L 151 220 Z" fill="url(#metalHoop)" />
+        <!-- Top Band Bevels -->
+        <line x1="154" y1="190" x2="346" y2="190" stroke="#a3a8b3" stroke-width="1.5" />
+        <line x1="151" y1="220" x2="349" y2="220" stroke="#0e0f12" stroke-width="2" />
+        <!-- Rivets -->
+        <circle cx="180" cy="205" r="3.5" fill="#111214" stroke="#5a5f6b" stroke-width="1" />
+        <circle cx="250" cy="205" r="3.5" fill="#111214" stroke="#5a5f6b" stroke-width="1" />
+        <circle cx="320" cy="205" r="3.5" fill="#111214" stroke="#5a5f6b" stroke-width="1" />
+      </g>
+
+      <!-- Bottom Metal Band -->
+      <g>
+        <path d="M 144 340 L 356 340 L 359 375 L 141 375 Z" fill="url(#metalHoop)" />
+        <!-- Bottom Band Bevels -->
+        <line x1="144" y1="340" x2="356" y2="340" stroke="#a3a8b3" stroke-width="1.5" />
+        <line x1="141" y1="375" x2="359" y2="375" stroke="#0e0f12" stroke-width="2" />
+        <!-- Rivets -->
+        <circle cx="170" cy="357.5" r="3.5" fill="#111214" stroke="#5a5f6b" stroke-width="1" />
+        <circle cx="250" cy="357.5" r="3.5" fill="#111214" stroke="#5a5f6b" stroke-width="1" />
+        <circle cx="330" cy="357.5" r="3.5" fill="#111214" stroke="#5a5f6b" stroke-width="1" />
+      </g>
+    </g>
+
+    <!-- Carved Tavern Emblem (Centered Medallion) -->
+    <g transform="translate(250, 270)">
+      <!-- Outer Ring -->
+      <circle cx="0" cy="0" r="32" fill="#2b1408" stroke="#1a0b04" stroke-width="3" />
+      <circle cx="0" cy="0" r="28" fill="#4a2511" stroke="#6e3719" stroke-width="1.5" />
+      <!-- Carved Dragon/Boar/Crossed Mugs Motif (Stylized Crossed Axes) -->
+      <path d="M -12 -12 L 12 12 M 12 -12 L -12 12" stroke="#2b1408" stroke-width="4" stroke-linecap="round" />
+      <path d="M -12 -12 L 12 12 M 12 -12 L -12 12" stroke="#d6ab65" stroke-width="2" stroke-linecap="round" opacity="0.8" />
+      <!-- Axe Heads -->
+      <path d="M -12 -15 C -18 -15 -18 -5 -12 -3 Z" fill="#d6ab65" opacity="0.8" />
+      <path d="M 12 -15 C 18 -15 18 -5 12 -3 Z" fill="#d6ab65" opacity="0.8" />
+      <circle cx="0" cy="0" r="5" fill="#d6ab65" opacity="0.9" />
+    </g>
+
+    <!-- Frothy Ale Head / Foam Top -->
+    <g filter="url(#foamShadow)">
+      <!-- Base Inner Liquid Rim Shadow -->
+      <ellipse cx="250" cy="150" rx="90" ry="20" fill="#2b1408" />
+
+      <!-- Overflow Drips Down the Front -->
+      <path d="M 175 150 Q 170 190 180 210 Q 185 220 190 200 Q 195 160 200 150 Z" fill="url(#foamGrad)" />
+      <path d="M 280 145 Q 290 180 295 230 Q 302 240 307 225 Q 310 160 315 145 Z" fill="url(#foamGrad)" />
+      <path d="M 230 150 Q 235 175 240 185 Q 245 190 250 175 Q 252 160 255 150 Z" fill="url(#foamGrad)" />
+
+      <!-- Puffy Foam Clouds (Layered Top) -->
+      <!-- Back Foam Layer -->
+      <ellipse cx="200" cy="140" rx="35" ry="25" fill="url(#foamGrad)" />
+      <ellipse cx="250" cy="135" rx="45" ry="25" fill="url(#foamGrad)" />
+      <ellipse cx="300" cy="140" rx="35" ry="25" fill="url(#foamGrad)" />
+
+      <!-- Front Foam Main Pillows -->
+      <circle cx="165" cy="145" r="25" fill="url(#foamGrad)" />
+      <circle cx="195" cy="140" r="30" fill="url(#foamGrad)" />
+      <circle cx="235" cy="130" r="35" fill="url(#foamGrad)" />
+      <circle cx="275" cy="135" r="32" fill="url(#foamGrad)" />
+      <circle cx="315" cy="140" r="28" fill="url(#foamGrad)" />
+      <circle cx="340" cy="150" r="20" fill="url(#foamGrad)" />
+
+      <!-- Extra Top Bubbles for Volume -->
+      <circle cx="215" cy="118" r="22" fill="#fffdf5" />
+      <circle cx="255" cy="112" r="26" fill="#fffdf5" />
+      <circle cx="290" cy="120" r="18" fill="#fffdf5" />
+
+      <!-- Foam Detail Highlights/Bubbles -->
+      <circle cx="230" cy="110" r="3" fill="#ffffff" opacity="0.8" />
+      <circle cx="240" cy="105" r="2" fill="#ffffff" opacity="0.8" />
+      <circle cx="268" cy="108" r="4" fill="#ffffff" opacity="0.7" />
+      <circle cx="205" cy="125" r="3.5" fill="#ffffff" opacity="0.6" />
+      <circle cx="180" cy="140" r="2" fill="#ffffff" opacity="0.6" />
+      <circle cx="305" cy="130" r="3" fill="#ffffff" opacity="0.6" />
+    </g>
+  </g>
+</svg>
