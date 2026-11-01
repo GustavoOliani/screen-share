@@ -1,0 +1,14 @@
+# IDEs
+.idea/
+*.iml
+.vscode/
+target/
+backend/target/
+frontend/dist/
+
+# Variáveis de ambiente
+.env
+application-local.properties
+
+# Logs
+*.log

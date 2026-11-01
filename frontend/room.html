@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/room.css">
+    <title>Sala - Screen Share P2P</title>
+    
+</head>
+<body>
+    <main id="room-screen">
+        <header id="room-header">
+            <h1>Salão de shows do Bar'do Aventureiro</h1>
+            <section>
+                <span id="user-id-display"></span>
+                <span id="participants-heading">Na sala (0)</span>
+            </section>
+            <span id="connection-status" role="status" aria-live="polite">Conectando ao servidor...</span>
+        </header>
+        <div id="video-content">
+            <div id="main-video-container" aria-live="polite">
+            </div>
+            <div id="thumbnail-strip" aria-label="Outros compartilhamentos"></div>
+        </div>
+        <footer>
+            <div id="footer-actions">
+                <button id="share-btn" class="btn-success" disabled>Compartilhar Tela</button>
+                <button class="btn-danger">Sair da Sala</button>
+            </div>
+        </footer>
+    </main>
+
+
+    <script src="js/room.js" defer></script>
+</body>
+</html>

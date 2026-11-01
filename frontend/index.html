@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/login.css">
+    <title>Entrar na sala - Screen Share P2P</title>
+</head>
+<body>
+    <main id="login-screen">
+        <h1>Screen Share P2P</h1>
+        <form id="login-form" class="login-form">
+            <div class="input-group">
+                <label for="participant-name">Seu nome:</label>
+                <input type="text" id="participant-name" placeholder="Como quer ser chamado?" maxlength="40" required>
+            </div>
+            <div class="input-group">
+                <label for="server-url">Servidor WebSocket:</label>
+                <input type="url" id="server-url" placeholder="wss://seu-backend.onrender.com/signal" required>
+            </div>
+            <div class="input-group">
+                <label for="room-password">Senha da Sala:</label>
+                <input type="password" id="room-password" placeholder="Digite a senha" required>
+            </div>
+            <button type="submit">Entrar na Sala</button>
+        </form>
+        <div id="status-msg" role="status" aria-live="polite"></div>
+    </main>
+
+    <script src="js/config.js"></script>
+    <script src="js/login.js" defer></script>
+</body>
+</html>

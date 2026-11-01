@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: screen-share-backend
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: ROOM_PASSWORD
+        sync: false
+      - key: FRONTEND_ORIGIN
+        sync: false
+
+  - type: web
+    name: screen-share-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: node build.mjs
+    staticPublishPath: dist
+    envVars:
+      - key: WEBSOCKET_URL
+        sync: false
