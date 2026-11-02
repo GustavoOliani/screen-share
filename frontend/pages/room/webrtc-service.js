@@ -5,6 +5,7 @@ class WebRtcService {
         this.iceServers = iceServers;
         this.localId = null;
         this.localStream = null;
+        this.pendingScreenShareStop = Promise.resolve();
         this.peerConnections = new Map();
         this.peerStates = new Map();
     }
@@ -28,13 +29,15 @@ class WebRtcService {
             isSettingRemoteAnswerPending: false,
             settingRemoteDescription: false,
             restartAttempted: false,
-            pendingCandidates: []
+            pendingCandidates: [],
+            localSenders: new Map()
         };
         this.peerConnections.set(peerId, peerConnection);
         this.peerStates.set(peerId, state);
 
         if (this.localStream) {
-            this.addLocalTracks(peerConnection, this.localStream);
+            void this.addLocalTracks(peerConnection, this.localStream, state)
+                .catch(error => this.reportError('Não foi possível adicionar as faixas locais.', error));
         }
 
         peerConnection.onicecandidate = (event) => {
@@ -158,11 +161,12 @@ class WebRtcService {
 
     async toggleScreenShare({ width, height, frameRate }) {
         if (this.localStream) {
-            this.stopScreenShare();
+            await this.stopScreenShare();
             return;
         }
 
         try {
+            await this.pendingScreenShareStop;
             this.localStream = await navigator.mediaDevices.getDisplayMedia({
                 video: {
                     width: { ideal: width },
@@ -171,37 +175,59 @@ class WebRtcService {
                 },
                 audio: true
             });
-            for (const peerConnection of this.peerConnections.values()) {
-                this.addLocalTracks(peerConnection, this.localStream);
-            }
-
             const videoTrack = this.localStream.getVideoTracks()[0];
             if (!videoTrack) {
                 throw new Error('A captura de tela não retornou uma faixa de vídeo.');
             }
-            videoTrack.onended = () => this.stopScreenShare();
+
+            await Promise.all([...this.peerConnections.entries()].map(([peerId, peerConnection]) =>
+                this.addLocalTracks(peerConnection, this.localStream, this.peerStates.get(peerId))));
+            videoTrack.addEventListener('ended', () => {
+                void this.stopScreenShare();
+            }, { once: true });
             this.handlers.onLocalScreenShareStarted(this.localStream);
         } catch (error) {
             this.reportError('Erro ao iniciar o compartilhamento de tela.', error);
-            this.stopScreenShare();
+            await this.stopScreenShare();
         }
     }
 
-    stopScreenShare() {
-        if (!this.localStream) return;
+    async stopScreenShare() {
+        if (!this.localStream) {
+            await this.pendingScreenShareStop;
+            return;
+        }
 
         const stream = this.localStream;
         this.localStream = null;
-        const trackIds = new Set(stream.getTracks().map(track => track.id));
-        for (const peerConnection of this.peerConnections.values()) {
-            for (const sender of peerConnection.getSenders()) {
-                if (sender.track && trackIds.has(sender.track.id)) {
-                    peerConnection.removeTrack(sender);
+        const stopPromise = (async () => {
+            const replacements = [];
+            for (const state of this.peerStates.values()) {
+                for (const track of stream.getTracks()) {
+                    const sender = state.localSenders.get(track.kind);
+                    if (sender?.track === track) {
+                        replacements.push(sender.replaceTrack(null));
+                    }
                 }
             }
+
+            const results = await Promise.allSettled(replacements);
+            for (const result of results) {
+                if (result.status === 'rejected') {
+                    this.reportError('Não foi possível encerrar uma faixa de compartilhamento.', result.reason);
+                }
+            }
+            stream.getTracks().forEach(track => track.stop());
+            this.handlers.onLocalScreenShareEnded();
+        })();
+        this.pendingScreenShareStop = stopPromise;
+        try {
+            await stopPromise;
+        } finally {
+            if (this.pendingScreenShareStop === stopPromise) {
+                this.pendingScreenShareStop = Promise.resolve();
+            }
         }
-        stream.getTracks().forEach(track => track.stop());
-        this.handlers.onLocalScreenShareEnded();
     }
 
     removePeer(peerId) {
@@ -223,11 +249,13 @@ class WebRtcService {
         this.peerStates.clear();
     }
 
-    addLocalTracks(peerConnection, stream) {
-        const existingTrackIds = new Set(peerConnection.getSenders().map(sender => sender.track?.id));
+    async addLocalTracks(peerConnection, stream, state) {
         for (const track of stream.getTracks()) {
-            if (!existingTrackIds.has(track.id)) {
-                peerConnection.addTrack(track, stream);
+            const sender = state.localSenders.get(track.kind);
+            if (sender) {
+                await sender.replaceTrack(track);
+            } else {
+                state.localSenders.set(track.kind, peerConnection.addTrack(track, stream));
             }
         }
         this.applyVideoCodecPreferences(peerConnection);

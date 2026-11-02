@@ -1,0 +1,98 @@
+{
+  "planHash": "7bb29f5d1f0bfa795bebc408741ba191d1582ebea03af5351b21b3dd1972065e",
+  "phase": "standalone",
+  "recordedAtUtc": "2026-11-02T21:20:41.6284709Z",
+  "retryCount": 0,
+  "resetBaseline": false,
+  "complete": true,
+  "result": {
+    "setupSucceeded": true,
+    "setupDurationMs": 0,
+    "setupFailureOutput": null,
+    "assertions": [
+      {
+        "name": "frontend-build",
+        "kind": "process",
+        "verificationMethod": "exit-code",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "",
+        "durationMs": 167
+      },
+      {
+        "name": "tests-pass",
+        "kind": "process",
+        "verificationMethod": "test-results",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "\r\n\u003E test\r\n\u003E node --test test/room-service.test.js test/webrtc-service.test.js\r\n\r\nTAP version 13\r\n# Subtest: opens the socket and sends the room password in the JOIN message\r\nok 1 - opens the socket and sends the room password in the JOIN message\r\n  ---\r\n  duration_ms: 3.4027\r\n  ...\r\n# Subtest: reports a synchronous socket construction error\r\nok 2 - reports a synchronous socket construction error\r\n  ---\r\n  duration_ms: 0.3984\r\n  ...\r\n# Subtest: sends signals only while the socket is open\r\nok 3 - sends signals only while the socket is open\r\n  ---\r\n  duration_ms: 0.8455\r\n  ...\r\n# Subtest: disconnect closes an active socket and does not close an already closing one\r\nok 4 - disconnect closes an active socket and does not close an already closing one\r\n  ---\r\n  duration_ms: 0.3221\r\n  ...\r\n# Subtest: dispatches JOINED and peer membership messages\r\nok 5 - dispatches JOINED and peer membership messages\r\n  ---\r\n  duration_ms: 0.5896\r\n  ...\r\n# Subtest: parses and dispatches all WebRTC signaling message types\r\nok 6 - parses and dispatches all WebRTC signaling message types\r\n  ---\r\n  duration_ms: 0.7541\r\n  ...\r\n# Subtest: reports malformed signaling payloads and handler failures\r\nok 7 - reports malformed signaling payloads and handler failures\r\n  ---\r\n  duration_ms: 1.1097\r\n  ...\r\n# Subtest: reports signaling errors and closes after an ERROR message\r\nok 8 - reports signaling errors and closes after an ERROR message\r\n  ---\r\n  duration_ms: 0.445\r\n  ...\r\n# Subtest: reports each connection failure only once across error and close events\r\nok 9 - reports each connection failure only once across error and close events\r\n  ---\r\n  duration_ms: 0.4491\r\n  ...\r\n# Subtest: reports an unexpected close but ignores intentional and already-reported closes\r\nok 10 - reports an unexpected close but ignores intentional and already-reported closes\r\n  ---\r\n  duration_ms: 1.1541\r\n  ...\r\n# Subtest: shares, ends a closed source, then reuses senders to share again\r\nok 11 - shares, ends a closed source, then reuses senders to share again\r\n  ---\r\n  duration_ms: 32.1757\r\n  ...\r\n# Subtest: starts with an active peer, stops on button toggle, and safely ignores a second stop\r\nok 12 - starts with an active peer, stops on button toggle, and safely ignores a second stop\r\n  ---\r\n  duration_ms: 0.5192\r\n  ...\r\n# Subtest: stops tracks even when a sender no longer owns that track\r\nok 13 - stops tracks even when a sender no longer owns that track\r\n  ---\r\n  duration_ms: 0.3752\r\n  ...\r\n# Subtest: reports capture rejection without leaving a stale stream\r\nok 14 - reports capture rejection without leaving a stale stream\r\n  ---\r\n  duration_ms: 0.6058\r\n  ...\r\n# Subtest: rejects a capture without video and stops its returned tracks\r\nok 15 - rejects a capture without video and stops its returned tracks\r\n  ---\r\n  duration_ms: 0.2734\r\n  ...\r\n# Subtest: reports sender replacement failures but still cleans up the capture\r\nok 16 - reports sender replacement failures but still cleans up the capture\r\n  ---\r\n  duration_ms: 0.4064\r\n  ...\r\n# Subtest: adds a peer only once and sends ICE candidates when present\r\nok 17 - adds a peer only once and sends ICE candidates when present\r\n  ---\r\n  duration_ms: 0.3838\r\n  ...\r\n# Subtest: reports failure when adding current local tracks to a newly joined peer fails\r\nok 18 - reports failure when adding current local tracks to a newly joined peer fails\r\n  ---\r\n  duration_ms: 3.4954\r\n  ...\r\n# Subtest: reports an ICE send failure\r\nok 19 - reports an ICE send failure\r\n  ---\r\n  duration_ms: 0.871\r\n  ...\r\n# Subtest: forwards remote streams and reports ended remote video tracks\r\nok 20 - forwards remote streams and reports ended remote video tracks\r\n  ---\r\n  duration_ms: 0.4762\r\n  ...\r\n# Subtest: creates an offer after negotiation and reports failures\r\nok 21 - creates an offer after negotiation and reports failures\r\n  ---\r\n  duration_ms: 0.3657\r\n  ...\r\n# Subtest: restarts failed ICE once until a connection succeeds\r\nok 22 - restarts failed ICE once until a connection succeeds\r\n  ---\r\n  duration_ms: 0.4845\r\n  ...\r\n# Subtest: ignores a colliding offer when this peer is \n\u2026[truncated]",
+        "durationMs": 1559,
+        "testResults": {
+          "testFramework": "unknown",
+          "runnerDetectedFrom": "none",
+          "testsTotal": 0,
+          "testsPassed": 0,
+          "testsFailed": 0,
+          "testsSkipped": 0,
+          "parseFailed": true
+        }
+      },
+      {
+        "name": "screen-share-business-rules-e2e",
+        "kind": "process",
+        "verificationMethod": "exit-code",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "\r\n\u003E test:e2e\r\n\u003E npm run build:e2e-backend \u0026\u0026 node --test test/e2e/streaming.e2e.test.js\r\n\r\n\r\n\u003E build:e2e-backend\r\n\u003E mvn -q -f ../backend/pom.xml package -DskipTests\r\n\r\nTAP version 13\r\n# Subtest: Regras de neg\u00F3cio do compartilhamento de tela\r\n    # Subtest: Participantes autenticados veem as demais pessoas na mesma sala\r\n    ok 1 - Participantes autenticados veem as demais pessoas na mesma sala\r\n      ---\r\n      duration_ms: 5487.6581\r\n      ...\r\n    # Subtest: O compartilhamento ativo entrega os quadros da tela ao participante remoto\r\n    ok 2 - O compartilhamento ativo entrega os quadros da tela ao participante remoto\r\n      ---\r\n      duration_ms: 5284.4905\r\n      ...\r\n    # Subtest: Fechar a janela compartilhada encerra a captura e restaura os controles\r\n    ok 3 - Fechar a janela compartilhada encerra a captura e restaura os controles\r\n      ---\r\n      duration_ms: 4908.4296\r\n      ...\r\n    # Subtest: Ap\u00F3s fechar a janela, \u00E9 poss\u00EDvel compartilhar outra sem sair da sala ou renegociar\r\n    ok 4 - Ap\u00F3s fechar a janela, \u00E9 poss\u00EDvel compartilhar outra sem sair da sala ou renegociar\r\n      ---\r\n      duration_ms: 5187.2214\r\n      ...\r\n    1..4\r\nok 1 - Regras de neg\u00F3cio do compartilhamento de tela\r\n  ---\r\n  duration_ms: 21600.4424\r\n  type: \u0027suite\u0027\r\n  ...\r\n1..1\r\n# tests 4\r\n# suites 1\r\n# pass 4\r\n# fail 0\r\n# cancelled 0\r\n# skipped 0\r\n# todo 0\r\n# duration_ms 22763.9203\r\n",
+        "durationMs": 30591
+      }
+    ],
+    "executions": [
+      {
+        "source": "frontend-build",
+        "resolvedExecutable": "C:\\nvm4w\\nodejs\\node.EXE",
+        "args": [
+          "build.mjs"
+        ],
+        "cwd": "C:\\Users\\Oliani\\Desktop\\projects\\screen-share-web-app\\frontend",
+        "env": {
+          "WEBSOCKET_URL": "wss://screen-share.test/signal"
+        },
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "tests-pass",
+        "resolvedExecutable": "C:\\nvm4w\\nodejs\\npm.CMD",
+        "args": [
+          "test"
+        ],
+        "cwd": "C:\\Users\\Oliani\\Desktop\\projects\\screen-share-web-app\\frontend",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "screen-share-business-rules-e2e",
+        "resolvedExecutable": "C:\\nvm4w\\nodejs\\npm.CMD",
+        "args": [
+          "run",
+          "test:e2e"
+        ],
+        "cwd": "C:\\Users\\Oliani\\Desktop\\projects\\screen-share-web-app\\frontend",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      }
+    ]
+  }
+}

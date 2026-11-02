@@ -1,0 +1,13 @@
+{
+  "name": "screen-share-frontend",
+  "private": true,
+  "devDependencies": {
+    "@playwright/test": "1.58.0"
+  },
+  "scripts": {
+    "test": "node --test test/room-service.test.js test/webrtc-service.test.js",
+    "test:coverage": "node --experimental-test-coverage --test test/room-service.test.js test/webrtc-service.test.js",
+    "build:e2e-backend": "mvn -q -f ../backend/pom.xml package -DskipTests",
+    "test:e2e": "npm run build:e2e-backend && node --test test/e2e/streaming.e2e.test.js"
+  }
+}

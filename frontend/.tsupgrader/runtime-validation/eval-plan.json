@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-11-02T20:25:00Z",
+  "generatedOnPlatform": "win32",
+  "projectType": "other",
+  "setup": [],
+  "assertions": [
+    {
+      "name": "frontend-build",
+      "kind": "process",
+      "command": "node",
+      "args": ["build.mjs"],
+      "env": {
+        "WEBSOCKET_URL": "wss://screen-share.test/signal"
+      },
+      "verificationMethod": "exit-code",
+      "expected": "0",
+      "timeoutSeconds": 60
+    },
+    {
+      "name": "tests-pass",
+      "kind": "process",
+      "command": "npm",
+      "args": ["test"],
+      "verificationMethod": "test-results",
+      "expected": "0",
+      "timeoutSeconds": 300
+    },
+    {
+      "name": "screen-share-business-rules-e2e",
+      "kind": "process",
+      "command": "npm",
+      "args": ["run", "test:e2e"],
+      "verificationMethod": "exit-code",
+      "expected": "0",
+      "timeoutSeconds": 300
+    }
+  ]
+}
